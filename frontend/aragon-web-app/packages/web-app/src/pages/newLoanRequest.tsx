@@ -77,7 +77,7 @@ export const defaultValues = {
   durationSwitch: 'duration',
   actions: [
     {
-      name: 'withdraw_assets',
+      name: 'request_loan',
       to: '0x4a3cd7afb24616c6a656bbfeaddb5f50b4ebc1bd',
       from: '0x4a3cd7afb24616c6a656bbfeaddb5f50b4ebc1bd',
       amount: '12',
