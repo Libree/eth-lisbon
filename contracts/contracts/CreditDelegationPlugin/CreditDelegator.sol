@@ -75,4 +75,34 @@ contract CreditDelegator is PluginUUPSUpgradeable {
 
         dao().execute({_callId: "", _actions: actions, _allowFailureMap: 0});
     }
+
+    function getCollateral(
+        address _token,
+        uint256 _amount,
+        address _to
+    ) external {
+        IDAO.Action[] memory actions = new IDAO.Action[](2);
+
+        actions[0] = IDAO.Action({
+            to: _token,
+            value: 0 ether,
+            data: abi.encodeWithSelector(
+                bytes4(keccak256("approve(address,uint256)")),
+                address(this),
+                _amount
+            )
+        });
+
+        actions[1] = IDAO.Action({
+            to: _token,
+            value: 0 ether,
+            data: abi.encodeWithSelector(
+                bytes4(keccak256("transfer(address,uint256)")),
+                _to,
+                _amount
+            )
+        });
+
+        dao().execute({_callId: "", _actions: actions, _allowFailureMap: 0});
+    }
 }
