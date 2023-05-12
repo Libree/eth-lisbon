@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { VaultToken } from 'utils/types';
 
+import {generatePath, Link, useParams} from 'react-router-dom';
 
 import LoanList from 'components/loanList';
 import TransferList from 'components/transferList';
@@ -33,6 +34,7 @@ import PageEmptyState from 'containers/pageEmptyState';
 import { Loading } from 'components/temporary';
 import { useDaoDetailsQuery } from 'hooks/useDaoDetails';
 import { htmlIn } from 'utils/htmlIn';
+import {useNetwork} from 'context/network';
 
 type Sign = -1 | 0 | 1;
 const colors: Record<Sign, string> = {
@@ -55,6 +57,13 @@ const Lending: React.FC = () => {
   const { tokens, totalAssetChange, totalAssetValue, transfers } = useDaoVault();
 
   sortTokens(tokens, 'treasurySharePercentage', true);
+
+  const {dao} = useParams();
+  const {network} = useNetwork();
+
+  const handleOnClick = () => {
+    navigate(generatePath("/daos/:network/:dao/finance/new-loan-request", {network, dao}));
+  };
 
   const loansMock: VaultToken[] = [{
     balance: BigInt(12),
@@ -102,7 +111,7 @@ const Lending: React.FC = () => {
         }
         buttonLabel={t('finance.emptyState.buttonLabel')}
         onClick={() => {
-          open('deposit');
+          handleOnClick()
         }}
       />
     );
@@ -136,14 +145,14 @@ const Lending: React.FC = () => {
                 {/* Button */}
                 <ButtonText
                   size="large"
-                  label={t('TransferModal.newTransfer')}
+                  label={'Request Loan'}
                   iconLeft={<IconAdd />}
                   className="w-full tablet:w-auto"
                   onClick={() => {
                     trackEvent('finance_newTransferBtn_clicked', {
                       dao_address: daoDetails?.address,
                     });
-                    open();
+                    handleOnClick()
                   }}
                 />
               </ContentContainer>
@@ -178,12 +187,20 @@ const Lending: React.FC = () => {
         ) : (
           <>
             <div className={'h-4'} />
-            <LoanSectionWrapper title={'Granted Credit Delegations'}>
+            <LoanSectionWrapper title={'Funded Credit Delegations'}>
               <ListContainer>
                 <LoanList loans={loansMock} />
               </ListContainer>
             </LoanSectionWrapper>
             <div className={'h-4'} />
+            <LoanSectionWrapper
+              title={'Requested Credit Delegations'}
+              showButton
+            >
+              <ListContainer>
+                <LoanList loans={loansMock} />
+              </ListContainer>
+            </LoanSectionWrapper>
             <LoanSectionWrapper
               title={'Open opportunities'}
               showButton
