@@ -50,6 +50,16 @@ export const TokenSectionWrapper = ({title, children}: SectionWrapperProps) => {
   );
 };
 
+
+export const LoanSectionWrapper = ({title, children}: SectionWrapperProps) => {
+  return (
+    <>
+      <SectionHeader title={title} />
+      {children}
+    </>
+  );
+};
+
 /**
  * Section wrapper for transfer overview. Consists of a header with a title, as
  * well as a footer with a button that takes the user to the token overview. and

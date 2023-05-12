@@ -6,30 +6,33 @@ import {
   Tag,
   IlluObject,
 } from '@aragon/ui-components';
-import {withTransaction} from '@elastic/apm-rum-react';
+import { withTransaction } from '@elastic/apm-rum-react';
 import React from 'react';
-import {useTranslation} from 'react-i18next';
-import {useNavigate} from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { VaultToken } from 'utils/types';
 
-import TokenList from 'components/tokenList';
+
+import LoanList from 'components/loanList';
 import TransferList from 'components/transferList';
 import {
   PageWrapper,
   TokenSectionWrapper,
   TransferSectionWrapper,
+  LoanSectionWrapper  
 } from 'components/wrappers';
-import {useGlobalModalContext} from 'context/globalModals';
-import {useTransactionDetailContext} from 'context/transactionDetail';
-import {useDaoVault} from 'hooks/useDaoVault';
-import {useMappedBreadcrumbs} from 'hooks/useMappedBreadcrumbs';
+import { useGlobalModalContext } from 'context/globalModals';
+import { useTransactionDetailContext } from 'context/transactionDetail';
+import { useDaoVault } from 'hooks/useDaoVault';
+import { useMappedBreadcrumbs } from 'hooks/useMappedBreadcrumbs';
 import useScreen from 'hooks/useScreen';
-import {trackEvent} from 'services/analytics';
-import {sortTokens} from 'utils/tokens';
+import { trackEvent } from 'services/analytics';
+import { sortTokens } from 'utils/tokens';
 import PageEmptyState from 'containers/pageEmptyState';
-import {Loading} from 'components/temporary';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
-import {htmlIn} from 'utils/htmlIn';
+import { Loading } from 'components/temporary';
+import { useDaoDetailsQuery } from 'hooks/useDaoDetails';
+import { htmlIn } from 'utils/htmlIn';
 
 type Sign = -1 | 0 | 1;
 const colors: Record<Sign, string> = {
@@ -39,19 +42,36 @@ const colors: Record<Sign, string> = {
 };
 
 const Lending: React.FC = () => {
-  const {t} = useTranslation();
-  const {data: daoDetails, isLoading} = useDaoDetailsQuery();
-  const {open} = useGlobalModalContext();
-  const {isMobile, isDesktop} = useScreen();
+  const { t } = useTranslation();
+  const { data: daoDetails, isLoading } = useDaoDetailsQuery();
+  const { open } = useGlobalModalContext();
+  const { isMobile, isDesktop } = useScreen();
 
   // load dao details
   const navigate = useNavigate();
-  const {breadcrumbs, icon, tag} = useMappedBreadcrumbs();
+  const { breadcrumbs, icon, tag } = useMappedBreadcrumbs();
 
-  const {handleTransferClicked} = useTransactionDetailContext();
-  const {tokens, totalAssetChange, totalAssetValue, transfers} = useDaoVault();
+  const { handleTransferClicked } = useTransactionDetailContext();
+  const { tokens, totalAssetChange, totalAssetValue, transfers } = useDaoVault();
 
   sortTokens(tokens, 'treasurySharePercentage', true);
+
+  const loansMock: VaultToken[] = [{
+    balance: BigInt(12),
+    metadata: {
+      decimals: 18,
+      id: "DAO Name",
+      imgUrl: "",
+      name: "DAO Name",
+      symbol: "DAO Symbol"
+    },
+    marketData: {
+      balanceValue: 123132,
+      percentageChangedDuringInterval: 126,
+      price: 127,
+      priceChangeDuringInterval: 12323,
+    }
+  }]
 
   /*************************************************
    *                    Render                     *
@@ -74,8 +94,8 @@ const Lending: React.FC = () => {
                 hair: 'bun',
               }}
               {...(isMobile
-                ? {height: 165, width: 295}
-                : {height: 225, width: 400})}
+                ? { height: 165, width: 295 }
+                : { height: 225, width: 400 })}
             />
             <IlluObject object={'wallet'} className="-ml-36" />
           </div>
@@ -106,23 +126,10 @@ const Lending: React.FC = () => {
               <ContentContainer>
                 <TextContainer>
                   <Title>
-                    {new Intl.NumberFormat('en-US', {
-                      style: 'currency',
-                      currency: 'USD',
-                    }).format(totalAssetValue)}
+                    Lending Dashboard
                   </Title>
 
                   <SubtitleContainer>
-                    <Tag label="24h" />
-                    <Description
-                      className={colors[Math.sign(totalAssetChange) as Sign]}
-                    >
-                      {new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        signDisplay: 'always',
-                      }).format(totalAssetChange)}
-                    </Description>
                   </SubtitleContainer>
                 </TextContainer>
 
@@ -157,8 +164,8 @@ const Lending: React.FC = () => {
                     hair: 'bun',
                   }}
                   {...(isMobile
-                    ? {height: 165, width: 295}
-                    : {height: 225, width: 400})}
+                    ? { height: 165, width: 295 }
+                    : { height: 225, width: 400 })}
                 />
                 <IlluObject object={'wallet'} className="-ml-32" />
               </div>
@@ -171,23 +178,20 @@ const Lending: React.FC = () => {
         ) : (
           <>
             <div className={'h-4'} />
-            <TokenSectionWrapper title={t('finance.tokenSection')}>
+            <LoanSectionWrapper title={'Granted Credit Delegations'}>
               <ListContainer>
-                <TokenList tokens={tokens.slice(0, 5)} />
+                <LoanList loans={loansMock} />
               </ListContainer>
-            </TokenSectionWrapper>
+            </LoanSectionWrapper>
             <div className={'h-4'} />
-            <TransferSectionWrapper
-              title={t('finance.transferSection')}
+            <LoanSectionWrapper
+              title={'Open opportunities'}
               showButton
             >
               <ListContainer>
-                <TransferList
-                  transfers={transfers.slice(0, 5)}
-                  onTransferClick={handleTransferClicked}
-                />
+                <LoanList loans={loansMock} />
               </ListContainer>
-            </TransferSectionWrapper>
+            </LoanSectionWrapper>
           </>
         )}
       </PageWrapper>
