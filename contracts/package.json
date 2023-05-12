@@ -1,6 +1,8 @@
 {
   "name": "hardhat-project",
   "devDependencies": {
+    "@aave/core-v3": "^1.17.2",
+    "@aragon/osx": "^1.2.0",
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
     "hardhat": "^2.14.0"
   }
