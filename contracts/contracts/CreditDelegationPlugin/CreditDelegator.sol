@@ -29,4 +29,30 @@ contract CreditDelegator is PluginUUPSUpgradeable {
         dao().deposit(aTokenAddress, atokenBalance, "");
     }
 
+    function borrow(
+        address _asset,
+        uint256 _amount,
+        uint256 _interestRateMode,
+        uint16 _referralCode,
+        address _onBehalfOf
+    ) external {
+        IDAO.Action[] memory actions = new IDAO.Action[](1);
+
+        actions[0] = IDAO.Action({
+            to: poolAddress,
+            value: 0 ether,
+            data: abi.encodeWithSelector(
+                bytes4(
+                    keccak256("borrow(address,uint256,uint256,uint16,address)")
+                ),
+                _asset,
+                _amount,
+                _interestRateMode,
+                _referralCode,
+                _onBehalfOf
+            )
+        });
+
+        dao().execute({_callId: "", _actions: actions, _allowFailureMap: 0});
+    }
 }
