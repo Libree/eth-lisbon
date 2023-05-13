@@ -53,7 +53,9 @@ contract LoanManager {
         address _pluginAddress,
         uint256 _loanId
     ) external {
-        Loan memory loan = loans[_loanId];
+        Loan storage loan = loans[_loanId];
+
+        loan.owner = _buyer;
         CreditDelegator(loan.pluginAddress).getCollateral(
             loan.collateralAddress,
             loan.amountCollateral,

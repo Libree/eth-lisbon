@@ -10,7 +10,7 @@ export interface IuseLoanManager {
 
 
 export const useLoanManager = (): IuseLoanManager => {
-    const loanManagerAddress = '0x375324fB4Fb8e9A872f08b26f43B7A7252aB9362'
+    const loanManagerAddress = '0x5670f3A473830e2208fc6bD1cC495843Dd8B0d42'
 
     const {
         provider: signerProvider,
