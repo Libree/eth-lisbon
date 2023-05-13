@@ -220,6 +220,7 @@ export type ActionsTypes =
   | 'update_minimum_approval'
   | 'request_loan'
   | 'accept_loan'
+  | 'provide_liquidity'
 
 // TODO Refactor ActionWithdraw With the new input structure
 export type ActionWithdraw = {
@@ -246,6 +247,14 @@ export type ActionAddAddress = {
   };
 };
 
+export type ActionProvideLiquidity = {
+  name: 'provide_liquidity';
+  inputs: {
+    memberWallets: {
+      address: Address;
+    }[];
+  };
+};
 
 export type ActionRequestLoan = {
   name: 'request_loan';
@@ -336,6 +345,7 @@ export type Action =
   | ActionUpdateMultisigPluginSettings
   | ActionRequestLoan
   | ActionAcceptLoan
+  | ActionProvideLiquidity
 
 
 export type ParamType = {

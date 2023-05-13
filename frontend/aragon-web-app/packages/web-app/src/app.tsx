@@ -28,6 +28,7 @@ import { identifyUser, trackPage } from 'services/analytics';
 import { NotFound } from 'utils/paths';
 import '../i18n.config';
 import DepositModal from 'containers/transactionModals/DepositModal';
+import ProvideLiquidity from 'pages/provideLiquidity';
 
 const DemoSCCPage = lazy(() => import('pages/demoScc'));
 const ExplorePage = lazy(() => import('pages/explore'));
@@ -50,6 +51,7 @@ const NewLoanFunding = lazy(() => import('pages/acceptLoanRequest'));
 
 const NewProposalPage = lazy(() => import('pages/newProposal'));
 const ProposalPage = lazy(() => import('pages/proposal'));
+const ProvideLiquidityPage = lazy(() => import('pages/provideLiquidity'));
 
 const MintTokensProposalPage = lazy(() => import('pages/mintTokens'));
 const ManageMembersProposalPage = lazy(() => import('pages/manageMembers'));
@@ -101,6 +103,10 @@ function App() {
               <Route path="finance/tokens" element={<TokensPage />} />
               <Route path="finance/transfers" element={<TransfersPage />} />
               <Route element={<ProtectedRoute />}>
+              <Route
+                  path="finance/provide-liquidity"
+                  element={<ProvideLiquidityPage/>}
+                />
                 <Route
                   path="finance/new-withdrawal"
                   element={<NewWithdrawPage />}
