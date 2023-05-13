@@ -86,6 +86,10 @@ export const defaultValues = {
       tokenSymbol: 'USDC',
       tokenName: 'USDC',
       tokenImgUrl: '',
+      principalAmount: '',
+      collateralAddress: '',
+      collateralAmount: '',
+      duration: ''
     },
   ],
 };

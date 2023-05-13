@@ -19,8 +19,9 @@ export const RequestCard: React.FC<{
       methodDescription={t('AddActionModal.withdrawAssetsActionSubtitle')}
     >
       <Container>
-        <CardText title='Amount requested' content={'10000'} type='label' />
-        <CardText title='Amount collateral' content={'20000'} type='label' />
+        <CardText title='Amount requested' content={`${action.principalAmount} USDC`} type='label' />
+        <CardText title='Amount collateral' content={`${action.collateralAmount}`} type='label' />
+        <CardText title='Loan duration' content={`${action.duration} Days`} type='label' />
       </Container>
     </AccordionMethod>
   );
