@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { VaultToken } from 'utils/types';
 
-import {generatePath, Link, useParams} from 'react-router-dom';
+import { generatePath, Link, useParams } from 'react-router-dom';
 
 import LoanList from 'components/loanList';
 import TransferList from 'components/transferList';
@@ -21,7 +21,7 @@ import {
   PageWrapper,
   TokenSectionWrapper,
   TransferSectionWrapper,
-  LoanSectionWrapper  
+  LoanSectionWrapper
 } from 'components/wrappers';
 import { useGlobalModalContext } from 'context/globalModals';
 import { useTransactionDetailContext } from 'context/transactionDetail';
@@ -34,7 +34,8 @@ import PageEmptyState from 'containers/pageEmptyState';
 import { Loading } from 'components/temporary';
 import { useDaoDetailsQuery } from 'hooks/useDaoDetails';
 import { htmlIn } from 'utils/htmlIn';
-import {useNetwork} from 'context/network';
+import { useNetwork } from 'context/network';
+import { useLoanManager } from 'hooks/useLoanManager';
 
 type Sign = -1 | 0 | 1;
 const colors: Record<Sign, string> = {
@@ -58,29 +59,34 @@ const Lending: React.FC = () => {
 
   sortTokens(tokens, 'treasurySharePercentage', true);
 
-  const {dao} = useParams();
-  const {network} = useNetwork();
+  const { dao } = useParams();
+  const { network } = useNetwork();
+
+  const { loans } = useLoanManager()
 
   const handleOnClick = () => {
-    navigate(generatePath("/daos/:network/:dao/finance/new-loan-request", {network, dao}));
+    navigate(generatePath("/daos/:network/:dao/finance/new-loan-request", { network, dao }));
   };
 
-  const loansMock: VaultToken[] = [{
-    balance: BigInt(12),
-    metadata: {
-      decimals: 18,
-      id: "DAO Name",
-      imgUrl: "",
-      name: "DAO Name",
-      symbol: "DAO Symbol"
-    },
-    marketData: {
-      balanceValue: 123132,
-      percentageChangedDuringInterval: 126,
-      price: 127,
-      priceChangeDuringInterval: 12323,
+  
+  const loansData: VaultToken[] = loans.map((loan: any) => {
+    return {
+      balance: BigInt(12),
+      metadata: {
+        decimals: loan.duration,
+        id: loan.daoName,
+        imgUrl: "",
+        name: loan.daoName,
+        symbol: "DAO Symbol"
+      },
+      marketData: {
+        balanceValue: loan.amountCollateral / 1e18,
+        percentageChangedDuringInterval: 126,
+        price: loan.amountPrincipal / 1e6,
+        priceChangeDuringInterval: 12323,
+      }
     }
-  }]
+  })
 
   /*************************************************
    *                    Render                     *
@@ -189,7 +195,7 @@ const Lending: React.FC = () => {
             <div className={'h-4'} />
             <LoanSectionWrapper title={'Funded Credit Delegations'}>
               <ListContainer>
-                <LoanList loans={loansMock} />
+                <LoanList loans={loansData} />
               </ListContainer>
             </LoanSectionWrapper>
             <div className={'h-4'} />
@@ -198,7 +204,7 @@ const Lending: React.FC = () => {
               showButton
             >
               <ListContainer>
-                <LoanList loans={loansMock} />
+                <LoanList loans={loansData} />
               </ListContainer>
             </LoanSectionWrapper>
             <LoanSectionWrapper
@@ -206,7 +212,7 @@ const Lending: React.FC = () => {
               showButton
             >
               <ListContainer>
-                <LoanList loans={loansMock} />
+                <LoanList loans={loansData} />
               </ListContainer>
             </LoanSectionWrapper>
           </>
