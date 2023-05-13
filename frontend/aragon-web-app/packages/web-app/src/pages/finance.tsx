@@ -205,7 +205,7 @@ const Finance: React.FC = () => {
             </TokenSectionWrapper>
             <TokenSectionWrapper title={'Your NFTs'}>
               <ListContainer>
-                {nfts.map((nft: any, index:any) => (
+                {daoDetails?.metadata.name == 'Dharma' && nfts.map((nft: any, index:any) => (
                   <img key={index} src={nft.image} alt={`Image ${index + 1}`} />
                 ))}
               </ListContainer>

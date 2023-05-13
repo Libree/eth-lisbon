@@ -75,15 +75,15 @@ const Lending: React.FC = () => {
       metadata: {
         decimals: loan.duration,
         id: loan.daoName,
-        imgUrl: "",
+        imgUrl: loan.owner,
         name: loan.daoName,
-        symbol: "DAO Symbol"
+        symbol: "DAO Symbol",
       },
       marketData: {
         balanceValue: loan.amountCollateral / 1e18,
         percentageChangedDuringInterval: 126,
         price: loan.amountPrincipal / 1e6,
-        priceChangeDuringInterval: 12323,
+        priceChangeDuringInterval: 12323
       }
     }
   })
@@ -195,7 +195,7 @@ const Lending: React.FC = () => {
             <div className={'h-4'} />
             <LoanSectionWrapper title={'Funded Credit Delegations'}>
               <ListContainer>
-                <LoanList loans={loansData} />
+                <LoanList loans={loansData.filter(e => e.metadata.name == 'Startup DAO' && daoDetails?.metadata.name !='Startup DAO')} />
               </ListContainer>
             </LoanSectionWrapper>
             <div className={'h-4'} />
@@ -204,7 +204,7 @@ const Lending: React.FC = () => {
               showButton
             >
               <ListContainer>
-                <LoanList loans={loansData} />
+                <LoanList loans={loansData.filter(e => e.metadata.name == daoDetails?.metadata.name  )} />
               </ListContainer>
             </LoanSectionWrapper>
             <LoanSectionWrapper
@@ -212,7 +212,7 @@ const Lending: React.FC = () => {
               showButton
             >
               <ListContainer>
-                <LoanList loans={loansData} />
+                <LoanList loans={loansData.filter(e => e.metadata.decimals != 60 && e.metadata.name != 'Startup DAO')} />
               </ListContainer>
             </LoanSectionWrapper>
           </>

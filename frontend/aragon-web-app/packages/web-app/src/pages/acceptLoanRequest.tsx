@@ -88,8 +88,9 @@ export const defaultValues = {
       tokenImgUrl: '',
       principalAmount: '10000',
       collateralAddress: '0x4a3cd7afb24616c6a656bbfeaddb5f50b4ebc1bd',
-      collateralAmount: '20000',
-      duration: '34'
+      collateralAmount: '50000',
+      duration: '120',
+      daoName: 'Startup DAO'
     },
   ],
 };

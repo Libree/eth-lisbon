@@ -18,7 +18,7 @@ export const AcceptLoanCard: React.FC<{
             methodDescription={'Fund Loan'}
         >
             <Container>
-                <CardText title='DAO' content={`DAO Name`} type='label' />
+                <CardText title='DAO' content={action.daoName} type='label' />
                 <CardText title='Amount requested' content={`${action.principalAmount} USDC`} type='label' />
                 <CardText title='Amount collateral' content={`${action.collateralAmount}`} type='label' />
                 <CardText title='Loan duration' content={`${action.duration} Days`} type='label' />
