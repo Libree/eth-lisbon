@@ -8,6 +8,7 @@ contract LoanManager {
     using Counters for Counters.Counter;
 
     struct Loan {
+        string daoName;
         address owner;
         address pluginAddress;
         address collateralAddress;
@@ -22,6 +23,7 @@ contract LoanManager {
     mapping(uint256 => Loan) public loans;
 
     function createLoan(
+        string daoName,
         address owner,
         address pluginAddress,
         address collateralAddress,
@@ -34,6 +36,7 @@ contract LoanManager {
         totalLoans.increment();
 
         loans[loanId] = Loan(
+            daoName,
             owner,
             pluginAddress,
             collateralAddress,
