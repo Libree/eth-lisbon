@@ -3,6 +3,7 @@
   "scripts": {
     "test": "npx hardhat test --network hardhat",
     "deploy:mumbai": "npx hardhat run --network mumbai scripts/deploy.ts",
+    "plugin:register": "npx hardhat run --network mumbai scripts/register-plugin.ts",
     "load:loan": "npx hardhat run --network mumbai scripts/load-loans.ts"
   },
   "devDependencies": {

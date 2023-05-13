@@ -9,7 +9,7 @@ import {PluginSetup, IPluginSetup} from "@aragon/osx/framework/plugin/setup/Plug
 import {MajorityVotingBase} from "@aragon/osx/plugins/governance/majority-voting/MajorityVotingBase.sol";
 import {LiquidityProvider} from "./LiquidityProvider.sol";
 
-contract LiLiquidityProviderquidityProviderSetup is PluginSetup {
+contract LiquidityProviderSetup is PluginSetup {
     LiquidityProvider private immutable liquidityProvider;
 
     constructor() {
