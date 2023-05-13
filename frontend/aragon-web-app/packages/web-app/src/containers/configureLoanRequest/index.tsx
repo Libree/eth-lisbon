@@ -300,7 +300,7 @@ const ConfigureLoanRequestForm: React.FC<ConfigureWithdrawFormProps> = ({
           helpText={'How much funding are you requesting?'}
         />
         <Controller
-          name={`actions.${actionIndex}.amount`}
+          name={`actions.${actionIndex}.principalAmount`}
           control={control}
           defaultValue=""
           rules={{
@@ -347,7 +347,7 @@ const ConfigureLoanRequestForm: React.FC<ConfigureWithdrawFormProps> = ({
           helpText={'Token collateral address'}
         />
         <Controller
-          name={`actions.${actionIndex}.tokenAddress`}
+          name={`actions.${actionIndex}.collateralAddress`}
           control={control}
           defaultValue=""
           rules={{
@@ -385,7 +385,7 @@ const ConfigureLoanRequestForm: React.FC<ConfigureWithdrawFormProps> = ({
           helpText={'Total collateral amount provided for the loan'}
         />
         <Controller
-          name={`actions.${actionIndex}.amount`}
+          name={`actions.${actionIndex}.collateralAmount`}
           control={control}
           defaultValue=""
           rules={{
@@ -434,7 +434,7 @@ const ConfigureLoanRequestForm: React.FC<ConfigureWithdrawFormProps> = ({
           helpText={'Loan duration in days'}
         />
         <Controller
-          name={`actions.${actionIndex}.amount`}
+          name={`actions.${actionIndex}.duration`}
           control={control}
           defaultValue=""
           rules={{
