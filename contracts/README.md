@@ -11,3 +11,5 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat run scripts/deploy.ts
 ```
+
+Loan Manager: 0x375324fB4Fb8e9A872f08b26f43B7A7252aB9362

@@ -1,9 +1,16 @@
 {
   "name": "hardhat-project",
+  "scripts": {
+    "test": "npx hardhat test --network hardhat",
+    "deploy:mumbai": "npx hardhat run --network mumbai scripts/deploy.ts",
+    "load:loan": "npx hardhat run --network mumbai scripts/load-loans.ts"
+  },
   "devDependencies": {
     "@aave/core-v3": "^1.17.2",
     "@aragon/osx": "^1.2.0",
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "@openzeppelin/hardhat-upgrades": "^1.25.3",
+    "dotenv": "^16.0.3",
     "hardhat": "^2.14.0"
   }
 }
