@@ -10,6 +10,15 @@ import {IERC20} from "@openzeppelin/contracts/interfaces/IERC20.sol";
 contract CreditDelegator is PluginUUPSUpgradeable {
     address public poolAddress;
 
+    bytes32 public constant BORROW_PERMISSION_ID =
+        keccak256("BORROW_PERMISSION");
+
+    bytes32 public constant APPROVE_DELEGATION_PERMISSION_ID =
+        keccak256("APPROVE_DELEGATION_PERMISSION");
+
+    bytes32 public constant GET_COLLATERAL_PERMISSION_ID =
+        keccak256("GET_COLLATERAL_PERMISSION");
+
     function initialize(IDAO _dao, address _poolAddress) external initializer {
         __PluginUUPSUpgradeable_init(_dao);
         poolAddress = _poolAddress;
@@ -35,7 +44,7 @@ contract CreditDelegator is PluginUUPSUpgradeable {
         uint256 _interestRateMode,
         uint16 _referralCode,
         address _onBehalfOf
-    ) external {
+    ) external auth(BORROW_PERMISSION_ID) {
         IDAO.Action[] memory actions = new IDAO.Action[](1);
 
         actions[0] = IDAO.Action({
@@ -60,7 +69,7 @@ contract CreditDelegator is PluginUUPSUpgradeable {
         address _asset,
         address _delegatee,
         uint256 _amount
-    ) external {
+    ) external auth(APPROVE_DELEGATION_PERMISSION_ID) {
         IDAO.Action[] memory actions = new IDAO.Action[](1);
 
         actions[0] = IDAO.Action({
@@ -80,7 +89,7 @@ contract CreditDelegator is PluginUUPSUpgradeable {
         address _token,
         uint256 _amount,
         address _to
-    ) external {
+    ) external auth(GET_COLLATERAL_PERMISSION_ID) {
         IDAO.Action[] memory actions = new IDAO.Action[](2);
 
         actions[0] = IDAO.Action({
