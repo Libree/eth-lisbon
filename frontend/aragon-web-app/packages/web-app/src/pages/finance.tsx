@@ -6,10 +6,10 @@ import {
   Tag,
   IlluObject,
 } from '@aragon/ui-components';
-import {withTransaction} from '@elastic/apm-rum-react';
+import { withTransaction } from '@elastic/apm-rum-react';
 import React from 'react';
-import {useTranslation} from 'react-i18next';
-import {useNavigate} from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import TokenList from 'components/tokenList';
@@ -19,17 +19,23 @@ import {
   TokenSectionWrapper,
   TransferSectionWrapper,
 } from 'components/wrappers';
-import {useGlobalModalContext} from 'context/globalModals';
-import {useTransactionDetailContext} from 'context/transactionDetail';
-import {useDaoVault} from 'hooks/useDaoVault';
-import {useMappedBreadcrumbs} from 'hooks/useMappedBreadcrumbs';
+import { useGlobalModalContext } from 'context/globalModals';
+import { useTransactionDetailContext } from 'context/transactionDetail';
+import { useDaoVault } from 'hooks/useDaoVault';
+import { useMappedBreadcrumbs } from 'hooks/useMappedBreadcrumbs';
 import useScreen from 'hooks/useScreen';
-import {trackEvent} from 'services/analytics';
-import {sortTokens} from 'utils/tokens';
+import { trackEvent } from 'services/analytics';
+import { sortTokens } from 'utils/tokens';
 import PageEmptyState from 'containers/pageEmptyState';
-import {Loading} from 'components/temporary';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
-import {htmlIn} from 'utils/htmlIn';
+import { Loading } from 'components/temporary';
+import { useDaoDetailsQuery } from 'hooks/useDaoDetails';
+import { htmlIn } from 'utils/htmlIn';
+import { useNetwork } from 'context/network';
+
+
+import { generatePath, Link, useParams } from 'react-router-dom';
+import { useNFTS } from 'hooks/useNFTs';
+
 
 type Sign = -1 | 0 | 1;
 const colors: Record<Sign, string> = {
@@ -39,19 +45,28 @@ const colors: Record<Sign, string> = {
 };
 
 const Finance: React.FC = () => {
-  const {t} = useTranslation();
-  const {data: daoDetails, isLoading} = useDaoDetailsQuery();
-  const {open} = useGlobalModalContext();
-  const {isMobile, isDesktop} = useScreen();
+  const { t } = useTranslation();
+  const { data: daoDetails, isLoading } = useDaoDetailsQuery();
+  const { open } = useGlobalModalContext();
+  const { isMobile, isDesktop } = useScreen();
 
   // load dao details
   const navigate = useNavigate();
-  const {breadcrumbs, icon, tag} = useMappedBreadcrumbs();
+  const { breadcrumbs, icon, tag } = useMappedBreadcrumbs();
 
-  const {handleTransferClicked} = useTransactionDetailContext();
-  const {tokens, totalAssetChange, totalAssetValue, transfers} = useDaoVault();
+  const { handleTransferClicked } = useTransactionDetailContext();
+  const { tokens, totalAssetChange, totalAssetValue, transfers } = useDaoVault();
 
   sortTokens(tokens, 'treasurySharePercentage', true);
+
+  const { dao } = useParams();
+  const { network } = useNetwork();
+
+  const { nfts } = useNFTS(1)
+
+  const handleOnClick = () => {
+    navigate(generatePath("/daos/:network/:dao/finance/provide-liquidity", { network, dao }));
+  };
 
   /*************************************************
    *                    Render                     *
@@ -74,8 +89,8 @@ const Finance: React.FC = () => {
                 hair: 'bun',
               }}
               {...(isMobile
-                ? {height: 165, width: 295}
-                : {height: 225, width: 400})}
+                ? { height: 165, width: 295 }
+                : { height: 225, width: 400 })}
             />
             <IlluObject object={'wallet'} className="-ml-36" />
           </div>
@@ -129,6 +144,18 @@ const Finance: React.FC = () => {
                 {/* Button */}
                 <ButtonText
                   size="large"
+                  label={"Provide liquidity"}
+                  iconLeft={<IconAdd />}
+                  className="w-full tablet:w-auto"
+                  onClick={() => {
+                    trackEvent('finance_newTransferBtn_clicked', {
+                      dao_address: daoDetails?.address,
+                    });
+                    handleOnClick();
+                  }}
+                />
+                <ButtonText
+                  size="large"
                   label={t('TransferModal.newTransfer')}
                   iconLeft={<IconAdd />}
                   className="w-full tablet:w-auto"
@@ -157,8 +184,8 @@ const Finance: React.FC = () => {
                     hair: 'bun',
                   }}
                   {...(isMobile
-                    ? {height: 165, width: 295}
-                    : {height: 225, width: 400})}
+                    ? { height: 165, width: 295 }
+                    : { height: 225, width: 400 })}
                 />
                 <IlluObject object={'wallet'} className="-ml-32" />
               </div>
@@ -174,6 +201,13 @@ const Finance: React.FC = () => {
             <TokenSectionWrapper title={t('finance.tokenSection')}>
               <ListContainer>
                 <TokenList tokens={tokens.slice(0, 5)} />
+              </ListContainer>
+            </TokenSectionWrapper>
+            <TokenSectionWrapper title={'Your NFTs'}>
+              <ListContainer>
+                {nfts.map((nft: any, index:any) => (
+                  <img key={index} src={nft.image} alt={`Image ${index + 1}`} />
+                ))}
               </ListContainer>
             </TokenSectionWrapper>
             <div className={'h-4'} />
