@@ -10,7 +10,7 @@ import "@uniswap/v3-periphery/contracts/interfaces/INonfungiblePositionManager.s
 import "@uniswap/v3-periphery/contracts/base/LiquidityManagement.sol";
 import "hardhat/console.sol";
 
-contract UniswapLiquidity is IERC721Receiver {
+contract LiquidityManager is IERC721Receiver {
 
     // 0.05% fee
     uint24 public constant poolFee = 500;
