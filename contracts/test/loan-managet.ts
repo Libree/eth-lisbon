@@ -25,6 +25,7 @@ describe('Loan Manager', function () {
     describe('Loan request: ', async () => {
         it('Dao lender request a loan', async () => {
             await loanManager.createLoan(
+                "Wealthy DAO",
                 signers[0].address,
                 signers[1].address,
                 COLLATERAL_ADDRESS,

@@ -23,7 +23,7 @@ contract LoanManager {
     mapping(uint256 => Loan) public loans;
 
     function createLoan(
-        string daoName,
+        string memory daoName,
         address owner,
         address pluginAddress,
         address collateralAddress,
