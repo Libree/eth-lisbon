@@ -11,6 +11,7 @@ import { RequestCard } from './actions/requestLoan';
 import { ModifyMvSettingsCard } from './actions/modifySettingsCard';
 import { RemoveAddressCard } from './actions/removeAddressCard';
 import { WithdrawCard } from './actions/withdrawCard';
+import { FundLoanCard } from './actions/fundLoan';
 
 type ActionsFilterProps = {
   action: Action;
@@ -39,6 +40,8 @@ export const ActionsFilter: React.FC<ActionsFilterProps> = ({ action }) => {
       return <ModifyMultisigSettingsCard action={action} />;
     case 'request_loan':
       return <RequestCard action={action} />;
+      case 'accept_loan':
+        return <FundLoanCard action={action} />;
     default:
       return <></>;
   }
