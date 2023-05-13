@@ -39,7 +39,7 @@ const LoanList: React.FC<LoanListProps> = ({loans}) => {
             : {
                 tokenUSDValue: ``,
                 treasuryShare: usdFormatter.format(
-                  loan.marketData.balanceValue
+                  loan.marketData.price
                 ),
                 treasurySharePercentage: `Credit score ⭐${loan.marketData.price}`,
 
